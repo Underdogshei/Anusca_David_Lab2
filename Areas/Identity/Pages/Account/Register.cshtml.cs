@@ -32,8 +32,7 @@ namespace Anusca_David_Lab2.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        private readonly Anusca_David_Lab2.Data.Anusca_David_Lab2Context
-_context;
+        private readonly Anusca_David_Lab2.Data.Anusca_David_Lab2Context _context;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -132,7 +131,8 @@ _context;
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-               
+
+                    var role = await _userManager.AddToRoleAsync(user, "User");
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -159,7 +159,7 @@ _context;
                         return LocalRedirect(returnUrl);
                     }
             }
-            return Page();
+    return Page();
         }
 
         private IdentityUser CreateUser()
